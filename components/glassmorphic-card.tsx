@@ -10,16 +10,13 @@ interface GlassmorphicCardProps {
 export function GlassmorphicCard({ children }: GlassmorphicCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.4 }}
       viewport={{ once: true }}
-      whileHover={{ y: -5 }}
     >
-      <div className="relative overflow-hidden rounded-xl bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 p-6 transition-all duration-300 hover:border-purple-500/50">
-        <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-xl blur opacity-25 hover:opacity-100 transition duration-1000 hover:duration-200"></div>
-
-        <div className="relative">{children}</div>
+      <div className="rounded-xl bg-slate-800/60 border border-slate-700/60 p-6 hover:border-indigo-500/40 transition-colors duration-300">
+        {children}
       </div>
     </motion.div>
   )

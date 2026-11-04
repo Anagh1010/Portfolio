@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ArrowRight, Github, Linkedin, Mail, GraduationCap, Award, Phone, MapPin } from "lucide-react";
-
+import { ArrowRight, Github, Linkedin, Mail, GraduationCap, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProjectCard } from "@/components/project-card";
 import { SkillBadge } from "@/components/skill-badge";
@@ -9,10 +8,10 @@ import { Timeline } from "@/components/timeline";
 import { ContactFormEmailJS } from "@/components/contact-form-emailjs";
 import { CreativeHero } from "@/components/creative-hero";
 import { FloatingNav } from "@/components/floating-nav";
-import { MouseFollower } from "@/components/mouse-follower";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { SectionHeading } from "@/components/section-heading";
 import { GlassmorphicCard } from "@/components/glassmorphic-card";
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
 export default function Portfolio() {
@@ -29,288 +28,253 @@ export default function Portfolio() {
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
-
     if (typing) {
-      // Typing phase
       if (displayText.length < texts[textIndex].length) {
         timeout = setTimeout(() => {
           setDisplayText(texts[textIndex].slice(0, displayText.length + 1));
         }, 80);
       } else {
-        timeout = setTimeout(() => setTyping(false), 1000);
+        timeout = setTimeout(() => setTyping(false), 1200);
       }
     } else {
-      // Deleting phase
       if (displayText.length > 1) {
         timeout = setTimeout(() => {
           setDisplayText(displayText.slice(0, -1));
-        }, 100);
+        }, 50);
       } else {
-        // instead of going to 0, jump to next word with 1 character typed
         const nextIndex = (textIndex + 1) % texts.length;
         setTextIndex(nextIndex);
-        setDisplayText(texts[nextIndex][0]); // start next word with first character
+        setDisplayText(texts[nextIndex][0]);
         setTyping(true);
       }
     }
     return () => clearTimeout(timeout);
   }, [displayText, typing, textIndex]);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-zinc-900 via-zinc-900 to-black text-white overflow-hidden">
-      <MouseFollower />
+    <div className="min-h-screen bg-slate-950 text-white overflow-hidden">
       <ScrollProgress />
       <FloatingNav />
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-          <div className="absolute top-40 right-10 w-72 h-72 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-          <div className="absolute bottom-20 left-1/3 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
-        </div>
+      {/* Subtle top glow */}
+      <div className="pointer-events-none fixed inset-0 z-0 bg-glow-top" />
 
-        <div className="container relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <div className="inline-block">
-              <div className="relative px-3 py-1 text-sm font-medium rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-4 mt-4">
-                <span className="relative z-10">
-                  Software Engineering @ DTU
-                </span>
-                <span className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 animate-pulse"></span>
-              </div>
-            </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold tracking-tight">
-              <span className="block text-2xl sm:text-3xl md:text-4xl font-semibold text-zinc-300 mb-2">
+      {/* ── Hero ───────────────────────────────────────── */}
+      <section className="relative min-h-screen flex items-center justify-center bg-grid">
+        <div className="container relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center py-24">
+          <motion.div
+            className="space-y-7"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {/* Tag */}
+            <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-indigo-400 font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
+              Software Engineering @ DTU
+            </span>
+
+            {/* Headline */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold tracking-tight leading-tight">
+              <span className="block text-slate-400 font-medium text-2xl sm:text-3xl mb-1">
                 Hi, I'm
               </span>
-              <span className="block h-[1.3em] min-h-[1.3em] leading-tight overflow-hidden">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600 whitespace-nowrap">
+              <span className="block h-[1.25em] min-h-[1.25em] overflow-hidden">
+                <span className="text-white whitespace-nowrap">
                   {displayText}
                 </span>
-                <span className="inline-block w-[3px] h-[0.85em] ml-1 bg-pink-500 animate-pulse align-baseline" />
+                <span className="inline-block w-[2px] h-[0.8em] ml-1 bg-indigo-400 animate-pulse align-baseline" />
               </span>
             </h1>
-            <p className="text-xl text-zinc-400 max-w-[600px]">
+
+            <p className="text-base text-slate-400 max-w-[520px] leading-relaxed">
               Software Engineering student at Delhi Technological University (DTU),
-              passionate about developing intelligent full-stack applications, scalable backend
-              systems, and machine learning solutions that solve real-world challenges.
+              passionate about developing intelligent full-stack applications, scalable
+              backend systems, and machine learning solutions that solve real-world challenges.
             </p>
-            <div className="flex flex-wrap gap-4 pt-4">
+
+            {/* CTA buttons */}
+            <div className="flex flex-wrap gap-3 pt-1">
               <a href="#projects">
-                <Button className="relative overflow-hidden group bg-gradient-to-r from-purple-500 to-pink-500 border-0">
-                  <span className="relative z-10 flex items-center">
-                    View Projects{" "}
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </span>
-                  <span className="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+                <Button className="bg-indigo-600 hover:bg-indigo-500 text-white border-0 gap-2">
+                  View Projects
+                  <ArrowRight className="h-4 w-4" />
                 </Button>
               </a>
               <a href="#contact">
-                <Button
-                  variant="outline"
-                  className="border-zinc-700 text-pink-500 hover:text-pink-700 hover:border-zinc-500"
-                >
+                <Button variant="outline" className="border-slate-700 text-slate-300 hover:text-white hover:border-slate-500 bg-transparent">
                   Contact Me
                 </Button>
               </a>
             </div>
-            <div className="flex gap-4 pt-4">
-              <Link
-                href="https://github.com/Anagh1010"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
-                >
-                  <Github className="h-5 w-5" />
+
+            {/* Socials */}
+            <div className="flex gap-3 pt-1">
+              <Link href="https://github.com/Anagh1010" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" size="icon" className="rounded-full bg-slate-800/60 hover:bg-slate-700 text-slate-400 hover:text-white h-9 w-9">
+                  <Github className="h-4 w-4" />
                   <span className="sr-only">GitHub</span>
                 </Button>
               </Link>
-              <Link
-                href="https://www.linkedin.com/in/anagh-bajpai-b928182a7/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
-                >
-                  <Linkedin className="h-5 w-5" />
+              <Link href="https://www.linkedin.com/in/anagh-bajpai-b928182a7/" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" size="icon" className="rounded-full bg-slate-800/60 hover:bg-slate-700 text-slate-400 hover:text-white h-9 w-9">
+                  <Linkedin className="h-4 w-4" />
                   <span className="sr-only">LinkedIn</span>
                 </Button>
               </Link>
               <Link href="mailto:anaghb1010@gmail.com">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
-                >
-                  <Mail className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="rounded-full bg-slate-800/60 hover:bg-slate-700 text-slate-400 hover:text-white h-9 w-9">
+                  <Mail className="h-4 w-4" />
                   <span className="sr-only">Email</span>
                 </Button>
               </Link>
             </div>
-          </div>
-          <div className="flex justify-center">
+          </motion.div>
+
+          {/* Particle canvas */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="flex justify-center"
+          >
             <CreativeHero />
-          </div>
+          </motion.div>
         </div>
 
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center items-start p-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-white/60 animate-pulse"></div>
-          </div>
-        </div>
+        {/* Scroll indicator */}
+        <a href="#about" className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300 transition-colors">
+          <span className="text-xs tracking-widest uppercase">Scroll</span>
+          <motion.div
+            className="w-px h-8 bg-slate-600"
+            animate={{ scaleY: [0.4, 1, 0.4] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </a>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-32 relative">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-          <div className="absolute bottom-1/3 left-1/3 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-        </div>
+      {/* ── About ──────────────────────────────────────── */}
+      <section id="about" className="py-24 border-t border-slate-800/60">
+        <div className="container">
+          <SectionHeading title="About Me" subtitle="Background & Journey" />
 
-        <div className="container relative z-10">
-          <SectionHeading
-            title="About Me"
-            subtitle="My background and journey"
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-16">
-            <div className="relative">
-              <div className="absolute -inset-4 rounded-xl bg-gradient-to-r from-purple-500/20 to-pink-500/20 blur-xl opacity-70"></div>
-              <div className="relative rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900/90 backdrop-blur-md p-8 space-y-6">
-                <div className="flex items-center gap-3 border-b border-zinc-800 pb-4">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-purple-500/20 to-pink-500/20 flex items-center justify-center text-purple-400">
-                    <GraduationCap className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-lg text-white">Education & Highlights</h3>
-                    <p className="text-xs text-zinc-400">Academic & Technical Milestones</p>
-                  </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start mt-12">
+            {/* Education card */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              viewport={{ once: true }}
+              className="rounded-xl bg-slate-800/60 border border-slate-700/60 p-6 space-y-5"
+            >
+              <div className="flex items-center gap-3 border-b border-slate-700/60 pb-4">
+                <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                  <GraduationCap className="h-4.5 w-4.5" />
                 </div>
-
-                <div className="space-y-4">
-                  <div className="p-4 rounded-lg bg-zinc-800/40 border border-zinc-700/40">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="font-medium text-white text-base">Delhi Technological University</h4>
-                        <p className="text-sm text-purple-400">B.Tech in Software Engineering</p>
-                      </div>
-                      <span className="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-300 font-mono">2023 – 2027</span>
-                    </div>
-                    <div className="mt-2 text-sm text-zinc-400 flex items-center justify-between">
-                      <span>Academic Score</span>
-                      <span className="font-semibold text-white">8.86 / 10 CGPA</span>
-                    </div>
-                  </div>
-
-                  <div className="p-4 rounded-lg bg-zinc-800/40 border border-zinc-700/40">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="font-medium text-white text-base">Maxfort School Dwarka</h4>
-                        <p className="text-sm text-zinc-400">CBSE Class XII & Class X</p>
-                      </div>
-                      <span className="text-xs px-2 py-1 rounded bg-zinc-700/50 text-zinc-300 font-mono">95% & 94.6%</span>
-                    </div>
-                    <p className="mt-2 text-xs text-zinc-400">Awarded School Trophy for securing the highest marks in Computer Science (12th Boards)</p>
-                  </div>
-
-                  <div className="p-4 rounded-lg bg-zinc-800/40 border border-zinc-700/40">
-                    <div className="flex items-center gap-3">
-                      <Award className="h-5 w-5 text-pink-400 shrink-0" />
-                      <div>
-                        <p className="text-sm font-medium text-white">1st Place — Execute 5.0 Hackathon</p>
-                        <p className="text-xs text-zinc-400">E-Cell, Delhi Technological University</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-2 border-t border-zinc-800 flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
-                  <span className="text-sm font-medium text-green-400">
-                    Available for SWE Internships & Full-time Roles
-                  </span>
+                <div>
+                  <h3 className="font-semibold text-white">Education & Highlights</h3>
+                  <p className="text-xs text-slate-500">Academic & Technical Milestones</p>
                 </div>
               </div>
-            </div>
 
-            <div className="space-y-6">
-              <GlassmorphicCard>
-                <p className="text-lg text-zinc-300">
-                  I am a Software Engineering student at Delhi Technological University (DTU)
-                  with a strong passion for architecting resilient software systems, designing
-                  clean full-stack applications, and building machine learning models.
-                </p>
-                <p className="text-lg text-zinc-300 mt-4">
-                  My professional experience includes software engineering roles at Coforge Technologies
-                  and DLED Labs (IIT Ropar), where I developed production RESTful APIs,
-                  implemented robust error-handling mechanisms and database field guides, and optimized
-                  state handling and Git workflows.
-                </p>
-                <p className="text-lg text-zinc-300 mt-4">
-                  I enjoy turning ideas into high-performance products — whether it's an AI-powered travel planner
-                  using Google Gemini API, a responsive e-commerce platform with RBAC and payment gateways,
-                  or deep learning computer vision pipelines.
-                </p>
+              <div className="space-y-3">
+                <div className="p-4 rounded-lg bg-slate-900/60 border border-slate-700/40">
+                  <div className="flex justify-between items-start gap-2">
+                    <div>
+                      <h4 className="font-medium text-white text-sm">Delhi Technological University</h4>
+                      <p className="text-xs text-indigo-400 mt-0.5">B.Tech in Software Engineering</p>
+                    </div>
+                    <span className="text-xs px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 font-mono shrink-0">2023 – 2027</span>
+                  </div>
+                  <div className="mt-2.5 text-xs text-slate-400 flex items-center justify-between">
+                    <span>Academic Score</span>
+                    <span className="font-semibold text-white">8.86 / 10 CGPA</span>
+                  </div>
+                </div>
 
-                <div className="grid grid-cols-2 gap-4 mt-8">
-                  <div className="space-y-1">
-                    <div className="text-sm text-zinc-500">Name</div>
-                    <div className="font-medium">Anagh Bajpai</div>
+                <div className="p-4 rounded-lg bg-slate-900/60 border border-slate-700/40">
+                  <div className="flex justify-between items-start gap-2">
+                    <div>
+                      <h4 className="font-medium text-white text-sm">Maxfort School Dwarka</h4>
+                      <p className="text-xs text-slate-400 mt-0.5">CBSE Class XII & Class X</p>
+                    </div>
+                    <span className="text-xs px-2 py-0.5 rounded bg-slate-700/50 text-slate-300 font-mono shrink-0">95% & 94.6%</span>
                   </div>
-                  <div className="space-y-1">
-                    <div className="text-sm text-zinc-500">Email</div>
-                    <div className="font-medium text-sm break-all">anaghb1010@gmail.com</div>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="text-sm text-zinc-500">Location</div>
-                    <div className="font-medium">New Delhi, India</div>
-                  </div>
-                  <div className="space-y-1">
-                    <div className="text-sm text-zinc-500">Phone</div>
-                    <div className="font-medium">+91-9821112573</div>
-                  </div>
-                  <div className="space-y-1 col-span-2">
-                    <div className="text-sm text-zinc-500">Availability</div>
-                    <div className="font-medium text-green-500">
-                      Open to opportunities
+                  <p className="mt-2 text-xs text-slate-400">School Trophy — Highest marks in Computer Science (12th Boards)</p>
+                </div>
+
+                <div className="p-4 rounded-lg bg-slate-900/60 border border-slate-700/40">
+                  <div className="flex items-center gap-3">
+                    <Award className="h-4 w-4 text-amber-400 shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-white">1st Place — Execute 5.0 Hackathon</p>
+                      <p className="text-xs text-slate-400">E-Cell, Delhi Technological University</p>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                <div className="mt-8">
-                  <a href="/resume.pdf" download="Anagh_Bajpai_Resume.pdf">
-                    <Button className="bg-zinc-800 hover:bg-zinc-700 text-white">
-                      Download Resume
-                    </Button>
-                  </a>
+              <div className="pt-3 border-t border-slate-700/50 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
+                <span className="text-sm text-green-400">Open to SWE Internships & Full-time Roles</span>
+              </div>
+            </motion.div>
+
+            {/* Bio card */}
+            <GlassmorphicCard>
+              <p className="text-sm text-slate-300 leading-relaxed">
+                I am a Software Engineering student at Delhi Technological University (DTU)
+                with a strong passion for architecting resilient software systems, designing
+                clean full-stack applications, and building machine learning models.
+              </p>
+              <p className="text-sm text-slate-300 leading-relaxed mt-4">
+                My professional experience includes software engineering roles at Coforge Technologies
+                and DLED Labs (IIT Ropar), where I developed production RESTful APIs,
+                implemented robust error-handling mechanisms and database field guides, and optimized
+                state handling and Git workflows.
+              </p>
+              <p className="text-sm text-slate-300 leading-relaxed mt-4">
+                I enjoy turning ideas into high-performance products — whether it's an AI-powered travel planner
+                using Google Gemini API, a responsive e-commerce platform with RBAC and payment gateways,
+                or deep learning computer vision pipelines.
+              </p>
+
+              <div className="grid grid-cols-2 gap-x-6 gap-y-4 mt-8 text-sm">
+                {[
+                  { label: "Name", value: "Anagh Bajpai" },
+                  { label: "Email", value: "anaghb1010@gmail.com", small: true },
+                  { label: "Location", value: "New Delhi, India" },
+                  { label: "Phone", value: "+91-9821112573" },
+                ].map(({ label, value, small }) => (
+                  <div key={label} className="space-y-0.5">
+                    <div className="text-xs text-slate-500 uppercase tracking-wide">{label}</div>
+                    <div className={`font-medium text-white ${small ? "text-xs" : ""}`}>{value}</div>
+                  </div>
+                ))}
+                <div className="col-span-2 space-y-0.5">
+                  <div className="text-xs text-slate-500 uppercase tracking-wide">Availability</div>
+                  <div className="font-medium text-green-400">Open to opportunities</div>
                 </div>
-              </GlassmorphicCard>
-            </div>
+              </div>
+
+              <div className="mt-6">
+                <a href="/resume.pdf" download="Anagh_Bajpai_Resume.pdf">
+                  <Button className="bg-slate-700 hover:bg-slate-600 text-white border-0 text-sm">
+                    Download Resume
+                  </Button>
+                </a>
+              </div>
+            </GlassmorphicCard>
           </div>
         </div>
       </section>
 
-      {/* Skills Section */}
-      <section id="skills" className="py-32 relative">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-        </div>
+      {/* ── Skills ─────────────────────────────────────── */}
+      <section id="skills" className="py-24 border-t border-slate-800/60">
+        <div className="container">
+          <SectionHeading title="Skills" subtitle="Technologies I work with" />
 
-        <div className="container relative z-10">
-          <SectionHeading
-            title="My Skills"
-            subtitle="Technologies I work with"
-          />
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-16">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-12">
             <SkillBadge name="TypeScript & JS" level={92} />
             <SkillBadge name="React & Next.js" level={90} />
             <SkillBadge name="Python" level={88} />
@@ -327,40 +291,32 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="py-32 relative">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-1/4 left-1/3 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-          <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-        </div>
+      {/* ── Projects ───────────────────────────────────── */}
+      <section id="projects" className="py-24 border-t border-slate-800/60">
+        <div className="container">
+          <SectionHeading title="Featured Projects" subtitle="Some of my recent work" />
 
-        <div className="container relative z-10">
-          <SectionHeading
-            title="Featured Projects"
-            subtitle="Some of my recent work"
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
             <ProjectCard
               title="Roamwise — AI Travel Planner"
-              description="A full-stack AI travel planner built with Next.js, React, TypeScript, Google Gemini API, and OpenStreetMap Nominatim to generate personalized, editable day-by-day itineraries with geocoding, AI revisions, Supabase Auth, PostgreSQL, Prisma ORM, and expense tracking."
-              tags={["Next.js", "React", "TypeScript", "Gemini API", "Supabase", "PostgreSQL", "Prisma"]}
+              description="A full-stack AI travel planner using Next.js, Google Gemini API, and OpenStreetMap Nominatim to generate personalized day-by-day itineraries with geocoding, AI revisions, Supabase Auth, PostgreSQL, Prisma ORM, and expense tracking."
+              tags={["Next.js", "TypeScript", "Gemini API", "Supabase", "PostgreSQL", "Prisma"]}
               image="/project1.png?height=400&width=600"
               demoUrl="https://roamwise-one.vercel.app/"
               repoUrl="https://github.com/Anagh1010/Roamwise"
             />
             <ProjectCard
               title="QuickCart — E-Commerce Platform"
-              description="Full-stack e-commerce platform built with Next.js, React, Tailwind CSS, and MongoDB. Features responsive product discovery, cart, checkout, order tracking, admin dashboards, Clerk RBAC, Razorpay payments, Cloudinary media storage, and Inngest event synchronization."
-              tags={["Next.js", "React", "MongoDB", "Clerk", "Razorpay", "Inngest", "Tailwind CSS"]}
+              description="Full-stack e-commerce platform with Next.js and MongoDB featuring cart, checkout, order tracking, admin dashboards, Clerk RBAC, Razorpay payments, Cloudinary media, and Inngest event synchronization."
+              tags={["Next.js", "MongoDB", "Clerk", "Razorpay", "Inngest", "Tailwind CSS"]}
               image="/project2.png?height=400&width=600"
               demoUrl="https://quickcart-ecom-alpha.vercel.app/"
               repoUrl="https://github.com/Anagh1010/QuickCart"
             />
             <ProjectCard
               title="Object Detection & Classification"
-              description="End-to-end 20-class object recognition pipeline on Pascal VOC 2012 (17,125 images, 40,138 instances). Extracted 2,048-dimensional ResNet-50 embeddings and trained ensemble models with 87.25% accuracy and 0.993 macro AUC with sliding-window inference."
-              tags={["Python", "PyTorch", "Torchvision", "ResNet-50", "Scikit-learn", "OpenCV", "Flask"]}
+              description="End-to-end 20-class pipeline on Pascal VOC 2012 (17K images). 2048-dim ResNet-50 embeddings, ensemble models — 87.25% accuracy and 0.993 macro AUC with sliding-window inference."
+              tags={["Python", "PyTorch", "ResNet-50", "Scikit-learn", "OpenCV", "Flask"]}
               image="/project3.png?height=400&width=600"
               repoUrl="https://github.com/Anagh1010/Object-Detection"
             />
@@ -368,76 +324,47 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Experience Section */}
-      <section id="experience" className="py-32 relative">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-1/3 right-1/3 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-          <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-        </div>
-
-        <div className="container relative z-10">
-          <SectionHeading
-            title="Work Experience & Milestones"
-            subtitle="My professional journey and achievements"
-          />
-
-          <div className="mt-16">
+      {/* ── Experience ─────────────────────────────────── */}
+      <section id="experience" className="py-24 border-t border-slate-800/60">
+        <div className="container max-w-3xl">
+          <SectionHeading title="Experience & Milestones" subtitle="My professional journey" />
+          <div className="mt-12">
             <Timeline />
           </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-32 relative">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-          <div className="absolute bottom-1/3 right-1/3 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10"></div>
-        </div>
-
-        <div className="container relative z-10">
+      {/* ── Contact ────────────────────────────────────── */}
+      <section id="contact" className="py-24 border-t border-slate-800/60">
+        <div className="container">
           <SectionHeading title="Get In Touch" subtitle="Let's work together" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mt-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start mt-12">
             <GlassmorphicCard>
-              <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
-              <div className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center">
-                    <Mail className="h-5 w-5 text-purple-400" />
-                  </div>
-                  <div>
-                    <div className="text-sm text-zinc-500">Email</div>
-                    <div className="font-medium">anaghb1010@gmail.com</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center">
-                    <Linkedin className="h-5 w-5 text-purple-400" />
-                  </div>
-                  <div>
-                    <div className="text-sm text-zinc-500">LinkedIn</div>
-                    <div className="font-medium">
-                      linkedin.com/in/anagh-bajpai-b928182a7
+              <h3 className="text-lg font-semibold mb-5">Contact Information</h3>
+              <div className="space-y-4">
+                {[
+                  { icon: Mail, label: "Email", value: "anaghb1010@gmail.com" },
+                  { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/anagh-bajpai-b928182a7" },
+                  { icon: Github, label: "GitHub", value: "github.com/Anagh1010" },
+                ].map(({ icon: Icon, label, value }) => (
+                  <div key={label} className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-slate-700/60 flex items-center justify-center shrink-0">
+                      <Icon className="h-4 w-4 text-indigo-400" />
+                    </div>
+                    <div>
+                      <div className="text-xs text-slate-500">{label}</div>
+                      <div className="text-sm font-medium text-white">{value}</div>
                     </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center">
-                    <Github className="h-5 w-5 text-purple-400" />
-                  </div>
-                  <div>
-                    <div className="text-sm text-zinc-500">GitHub</div>
-                    <div className="font-medium">github.com/Anagh1010</div>
-                  </div>
-                </div>
+                ))}
               </div>
 
-              <div className="mt-8 pt-8 border-t border-zinc-800">
-                <h4 className="text-lg font-medium mb-4">Current Status</h4>
+              <div className="mt-6 pt-5 border-t border-slate-700/50">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
-                  <span>
-                    Available for internships and full-time software engineering roles
+                  <span className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
+                  <span className="text-sm text-slate-300">
+                    Open to internships and full-time software engineering roles
                   </span>
                 </div>
               </div>
@@ -448,59 +375,30 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-zinc-800 py-12">
-        <div className="container flex flex-col md:flex-row justify-between items-center gap-6">
+      {/* ── Footer ─────────────────────────────────────── */}
+      <footer className="border-t border-slate-800/60 py-8">
+        <div className="container flex flex-col sm:flex-row justify-between items-center gap-4">
           <div>
-            <Link href="/" className="font-bold text-xl">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
-                Anagh
-              </span>
-              <span className="text-white"> Bajpai</span>
+            <Link href="/" className="text-base font-semibold text-white">
+              Anagh <span className="text-indigo-400">Bajpai</span>
             </Link>
-            <p className="text-sm text-zinc-500 mt-2">
+            <p className="text-xs text-slate-500 mt-1">
               © {new Date().getFullYear()} Anagh Bajpai. All rights reserved.
             </p>
           </div>
-          <div className="flex gap-4">
-            <Link
-              href="https://github.com/Anagh1010"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
-              >
-                <Github className="h-5 w-5" />
-                <span className="sr-only">GitHub</span>
-              </Button>
-            </Link>
-            <Link
-              href="https://www.linkedin.com/in/anagh-bajpai-b928182a7/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
-              >
-                <Linkedin className="h-5 w-5" />
-                <span className="sr-only">LinkedIn</span>
-              </Button>
-            </Link>
-            <Link href="mailto:anaghb1010@gmail.com">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-full bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-white"
-              >
-                <Mail className="h-5 w-5" />
-                <span className="sr-only">Email</span>
-              </Button>
-            </Link>
+          <div className="flex gap-2">
+            {[
+              { href: "https://github.com/Anagh1010", icon: Github, label: "GitHub" },
+              { href: "https://www.linkedin.com/in/anagh-bajpai-b928182a7/", icon: Linkedin, label: "LinkedIn" },
+              { href: "mailto:anaghb1010@gmail.com", icon: Mail, label: "Email" },
+            ].map(({ href, icon: Icon, label }) => (
+              <Link key={label} href={href} target={href.startsWith("mailto") ? undefined : "_blank"} rel="noopener noreferrer">
+                <Button variant="ghost" size="icon" className="rounded-full bg-slate-800/50 hover:bg-slate-700 text-slate-400 hover:text-white h-9 w-9">
+                  <Icon className="h-4 w-4" />
+                  <span className="sr-only">{label}</span>
+                </Button>
+              </Link>
+            ))}
           </div>
         </div>
       </footer>
