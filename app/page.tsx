@@ -1,407 +1,462 @@
-"use client";
-import Link from "next/link";
-import { ArrowRight, Github, Linkedin, Mail, GraduationCap, Award } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { ProjectCard } from "@/components/project-card";
-import { SkillBadge } from "@/components/skill-badge";
-import { Timeline } from "@/components/timeline";
-import { ContactFormEmailJS } from "@/components/contact-form-emailjs";
-import { CreativeHero } from "@/components/creative-hero";
-import { FloatingNav } from "@/components/floating-nav";
-import { ScrollProgress } from "@/components/scroll-progress";
-import { SectionHeading } from "@/components/section-heading";
-import { GlassmorphicCard } from "@/components/glassmorphic-card";
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+"use client"
 
-export default function Portfolio() {
-  const texts = [
-    "Anagh Bajpai",
-    "Software Engineer",
-    "Full-Stack Developer",
-    "AI / ML Enthusiast",
-  ];
+import { useState } from "react"
+import Link from "next/link"
+import { motion } from "framer-motion"
+import {
+  ArrowRight,
+  Download,
+  Github,
+  Linkedin,
+  Mail,
+  Copy,
+  Check,
+  Terminal,
+  Code2,
+  Cpu,
+  GraduationCap,
+  Sparkles,
+  ExternalLink,
+  ChevronDown,
+} from "lucide-react"
 
-  const [textIndex, setTextIndex] = useState(0);
-  const [displayText, setDisplayText] = useState("");
-  const [typing, setTyping] = useState(true);
+import { Navbar } from "@/components/navbar"
+import { TerminalCard } from "@/components/terminal-card"
+import { ProjectCard, ProjectData } from "@/components/project-card"
+import { SkillsMatrix } from "@/components/skills-matrix"
+import { Timeline } from "@/components/timeline"
+import { ContactSection } from "@/components/contact-section"
 
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    if (typing) {
-      if (displayText.length < texts[textIndex].length) {
-        timeout = setTimeout(() => {
-          setDisplayText(texts[textIndex].slice(0, displayText.length + 1));
-        }, 80);
-      } else {
-        timeout = setTimeout(() => setTyping(false), 1200);
-      }
-    } else {
-      if (displayText.length > 1) {
-        timeout = setTimeout(() => {
-          setDisplayText(displayText.slice(0, -1));
-        }, 50);
-      } else {
-        const nextIndex = (textIndex + 1) % texts.length;
-        setTextIndex(nextIndex);
-        setDisplayText(texts[nextIndex][0]);
-        setTyping(true);
-      }
-    }
-    return () => clearTimeout(timeout);
-  }, [displayText, typing, textIndex]);
+export default function PortfolioPage() {
+  const [copiedEmail, setCopiedEmail] = useState(false)
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText("anaghb1010@gmail.com")
+    setCopiedEmail(true)
+    setTimeout(() => setCopiedEmail(false), 2000)
+  }
+
+  const projects: ProjectData[] = [
+    {
+      title: "Roamwise — AI Travel Planner",
+      subtitle: "Full-Stack • Generative AI",
+      category: "Full-Stack • AI",
+      description:
+        "An intelligent, end-to-end travel itinerary planner built with Next.js, TypeScript, Google Gemini API, and OpenStreetMap Nominatim. Generates editable, geocoded day-by-day itineraries with persistent budgeting and Supabase auth.",
+      architecturePoints: [
+        "Reliable AI workflows using structured JSON output & strict Zod validation for itinerary generation & travel diary revisions.",
+        "Deterministic fallback preview mode when API key is unprovided.",
+        "Secure trip management via Supabase Auth, PostgreSQL, and Prisma ORM with saved trips & expense tracking.",
+      ],
+      tags: ["Next.js 15", "TypeScript", "Google Gemini API", "Supabase", "PostgreSQL", "Prisma ORM", "Zod"],
+      image: "/project1.png",
+      demoUrl: "https://roamwise-one.vercel.app/",
+      repoUrl: "https://github.com/Anagh1010/Roamwise",
+      featured: true,
+    },
+    {
+      title: "QuickCart — Production E-Commerce Platform",
+      subtitle: "Full-Stack • Cloud & Payments",
+      category: "Full-Stack",
+      description:
+        "A full-featured e-commerce ecosystem built with Next.js, React, and MongoDB. Features responsive product discovery, cart, checkout, order tracking, admin dashboards, Clerk RBAC, Razorpay payments, and Cloudinary media.",
+      architecturePoints: [
+        "Secure backend workflows using Next.js API Routes, MongoDB/Mongoose, Clerk-based RBAC, and React Context.",
+        "Integrated Razorpay for seamless online/COD payments and Cloudinary for optimized product media delivery.",
+        "Inngest event-driven user synchronization, abandoned-payment inventory recovery, and health monitoring.",
+      ],
+      tags: ["Next.js", "React", "MongoDB", "Mongoose", "Clerk RBAC", "Razorpay", "Inngest", "Cloudinary"],
+      image: "/project2.png",
+      demoUrl: "https://quickcart-ecom-alpha.vercel.app/",
+      repoUrl: "https://github.com/Anagh1010/QuickCart",
+      featured: true,
+    },
+    {
+      title: "Object Detection & Classification Pipeline",
+      subtitle: "Computer Vision • Deep Learning",
+      category: "AI / ML",
+      description:
+        "End-to-end 20-class object recognition pipeline trained on the Pascal VOC 2012 benchmark dataset (17,125 images and 40,138 object instances) with ResNet-50 embeddings and consensus voting.",
+      architecturePoints: [
+        "Extracted 2,048-dimensional ResNet-50 embeddings from annotated object crops with stratified splits and 10-fold cross-validation.",
+        "Trained Logistic Regression, Random Forest, and Decision Tree ensembles achieving 87.25% accuracy and 0.993 macro AUC.",
+        "Deployed sliding-window inference with confidence thresholding and consensus voting to reduce false positives.",
+      ],
+      tags: ["Python", "PyTorch", "Torchvision", "ResNet-50", "Scikit-learn", "OpenCV", "Flask"],
+      image: "/project3.png",
+      repoUrl: "https://github.com/Anagh1010/Object-Detection",
+      featured: true,
+    },
+  ]
+
+  const stats = [
+    { value: "8.86", label: "DTU CGPA", sub: "Software Engineering ('27)" },
+    { value: "17,000+", label: "VOC Images", sub: "Deep Learning Pipeline" },
+    { value: "1st Place", label: "Hackathon Winner", sub: "Execute 5.0 @ DTU" },
+    { value: "95%", label: "CBSE XII Board", sub: "CS Trophy Recipient" },
+  ]
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white overflow-hidden">
-      <ScrollProgress />
-      <FloatingNav />
+    <div className="relative min-h-screen bg-zinc-950 text-zinc-100 bg-grid-pattern selection:bg-zinc-800 selection:text-white">
+      {/* Navbar */}
+      <Navbar />
 
-      {/* Subtle top glow */}
-      <div className="pointer-events-none fixed inset-0 z-0 bg-glow-top" />
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
+        {/* Subtle radial ambient light */}
+        <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[450px] bg-indigo-600/[0.07] blur-[120px] rounded-full" />
 
-      {/* ── Hero ───────────────────────────────────────── */}
-      <section className="relative min-h-screen flex items-center justify-center bg-grid">
-        <div className="container relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center py-24">
-          <motion.div
-            className="space-y-7"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            {/* Tag */}
-            <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-widest text-indigo-400 font-semibold">
-              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
-              Software Engineering @ DTU
-            </span>
-
-            {/* Headline */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold tracking-tight leading-tight">
-              <span className="block text-slate-400 font-medium text-2xl sm:text-3xl mb-1">
-                Hi, I'm
-              </span>
-              <span className="block h-[1.25em] min-h-[1.25em] overflow-hidden">
-                <span className="text-white whitespace-nowrap">
-                  {displayText}
-                </span>
-                <span className="inline-block w-[2px] h-[0.8em] ml-1 bg-indigo-400 animate-pulse align-baseline" />
-              </span>
-            </h1>
-
-            <p className="text-base text-slate-400 max-w-[520px] leading-relaxed">
-              Software Engineering student at Delhi Technological University (DTU),
-              passionate about developing intelligent full-stack applications, scalable
-              backend systems, and machine learning solutions that solve real-world challenges.
-            </p>
-
-            {/* CTA buttons */}
-            <div className="flex flex-wrap gap-3 pt-1">
-              <a href="#projects">
-                <Button className="bg-indigo-600 hover:bg-indigo-500 text-white border-0 gap-2">
-                  View Projects
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </a>
-              <a href="#contact">
-                <Button variant="outline" className="border-slate-700 text-slate-300 hover:text-white hover:border-slate-500 bg-transparent">
-                  Contact Me
-                </Button>
-              </a>
-            </div>
-
-            {/* Socials */}
-            <div className="flex gap-3 pt-1">
-              <Link href="https://github.com/Anagh1010" target="_blank" rel="noopener noreferrer">
-                <Button variant="ghost" size="icon" className="rounded-full bg-slate-800/60 hover:bg-slate-700 text-slate-400 hover:text-white h-9 w-9">
-                  <Github className="h-4 w-4" />
-                  <span className="sr-only">GitHub</span>
-                </Button>
-              </Link>
-              <Link href="https://www.linkedin.com/in/anagh-bajpai-b928182a7/" target="_blank" rel="noopener noreferrer">
-                <Button variant="ghost" size="icon" className="rounded-full bg-slate-800/60 hover:bg-slate-700 text-slate-400 hover:text-white h-9 w-9">
-                  <Linkedin className="h-4 w-4" />
-                  <span className="sr-only">LinkedIn</span>
-                </Button>
-              </Link>
-              <Link href="mailto:anaghb1010@gmail.com">
-                <Button variant="ghost" size="icon" className="rounded-full bg-slate-800/60 hover:bg-slate-700 text-slate-400 hover:text-white h-9 w-9">
-                  <Mail className="h-4 w-4" />
-                  <span className="sr-only">Email</span>
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
-
-          {/* Particle canvas */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex justify-center"
-          >
-            <CreativeHero />
-          </motion.div>
-        </div>
-
-        {/* Scroll indicator */}
-        <a href="#about" className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300 transition-colors">
-          <span className="text-xs tracking-widest uppercase">Scroll</span>
-          <motion.div
-            className="w-px h-8 bg-slate-600"
-            animate={{ scaleY: [0.4, 1, 0.4] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </a>
-      </section>
-
-      {/* ── About ──────────────────────────────────────── */}
-      <section id="about" className="py-24 border-t border-slate-800/60">
-        <div className="container">
-          <SectionHeading title="About Me" subtitle="Background & Journey" />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start mt-12">
-            {/* Education card */}
+        <div className="container max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            {/* Left Column: Bio & Impact */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              viewport={{ once: true }}
-              className="rounded-xl bg-slate-800/60 border border-slate-700/60 p-6 space-y-5"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="lg:col-span-7 space-y-6"
             >
-              <div className="flex items-center gap-3 border-b border-slate-700/60 pb-4">
-                <div className="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400">
-                  <GraduationCap className="h-4.5 w-4.5" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-white">Education & Highlights</h3>
-                  <p className="text-xs text-slate-500">Academic & Technical Milestones</p>
-                </div>
+              {/* Availability Badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900/90 border border-zinc-800 text-xs font-mono text-zinc-300 backdrop-blur-md">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                <span>Available for SWE Internships & Full-Time Roles</span>
               </div>
 
+              {/* Main Headline */}
               <div className="space-y-3">
-                <div className="p-4 rounded-lg bg-slate-900/60 border border-slate-700/40">
-                  <div className="flex justify-between items-start gap-2">
-                    <div>
-                      <h4 className="font-medium text-white text-sm">Delhi Technological University</h4>
-                      <p className="text-xs text-indigo-400 mt-0.5">B.Tech in Software Engineering</p>
-                    </div>
-                    <span className="text-xs px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 font-mono shrink-0">2023 – 2027</span>
-                  </div>
-                  <div className="mt-2.5 text-xs text-slate-400 flex items-center justify-between">
-                    <span>Academic Score</span>
-                    <span className="font-semibold text-white">8.86 / 10 CGPA</span>
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-lg bg-slate-900/60 border border-slate-700/40">
-                  <div className="flex justify-between items-start gap-2">
-                    <div>
-                      <h4 className="font-medium text-white text-sm">Maxfort School Dwarka</h4>
-                      <p className="text-xs text-slate-400 mt-0.5">CBSE Class XII & Class X</p>
-                    </div>
-                    <span className="text-xs px-2 py-0.5 rounded bg-slate-700/50 text-slate-300 font-mono shrink-0">95% & 94.6%</span>
-                  </div>
-                  <p className="mt-2 text-xs text-slate-400">School Trophy — Highest marks in Computer Science (12th Boards)</p>
-                </div>
-
-                <div className="p-4 rounded-lg bg-slate-900/60 border border-slate-700/40">
-                  <div className="flex items-center gap-3">
-                    <Award className="h-4 w-4 text-amber-400 shrink-0" />
-                    <div>
-                      <p className="text-sm font-medium text-white">1st Place — Execute 5.0 Hackathon</p>
-                      <p className="text-xs text-slate-400">E-Cell, Delhi Technological University</p>
-                    </div>
-                  </div>
-                </div>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.1]">
+                  Hi, I'm <span className="text-zinc-100">Anagh Bajpai</span>.
+                </h1>
+                <p className="text-lg sm:text-xl text-zinc-400 font-normal leading-relaxed max-w-2xl">
+                  Software Engineering student at{" "}
+                  <span className="text-zinc-200 font-medium">Delhi Technological University (DTU)</span>.
+                  I design high-performance full-stack web platforms, robust RESTful APIs,
+                  and applied machine learning pipelines.
+                </p>
               </div>
 
-              <div className="pt-3 border-t border-slate-700/50 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
-                <span className="text-sm text-green-400">Open to SWE Internships & Full-time Roles</span>
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                <a
+                  href="#projects"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 font-medium text-sm transition-all shadow-sm group"
+                >
+                  <span>Explore Projects</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                </a>
+
+                <a
+                  href="/resume.pdf"
+                  download="Anagh_Bajpai_Resume.pdf"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 text-sm font-medium transition-all"
+                >
+                  <Download className="w-4 h-4 text-zinc-400" />
+                  <span>Resume (PDF)</span>
+                </a>
+
+                <button
+                  onClick={copyEmail}
+                  className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-zinc-900/60 hover:bg-zinc-800/80 border border-zinc-800 text-xs font-mono text-zinc-400 hover:text-zinc-200 transition-all"
+                >
+                  {copiedEmail ? (
+                    <>
+                      <Check className="w-4 h-4 text-emerald-400" />
+                      <span className="text-emerald-400">Copied</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-4 h-4" />
+                      <span>Copy Email</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Social Links & Quick Stack */}
+              <div className="pt-4 flex flex-wrap items-center gap-6 text-xs font-mono text-zinc-500 border-t border-zinc-900">
+                <div className="flex items-center gap-4">
+                  <a
+                    href="https://github.com/Anagh1010"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors"
+                  >
+                    <Github className="w-4 h-4" />
+                    <span>GitHub</span>
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/anagh-bajpai-b928182a7/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors"
+                  >
+                    <Linkedin className="w-4 h-4" />
+                    <span>LinkedIn</span>
+                  </a>
+                  <a
+                    href="mailto:anaghb1010@gmail.com"
+                    className="flex items-center gap-1.5 text-zinc-400 hover:text-white transition-colors"
+                  >
+                    <Mail className="w-4 h-4" />
+                    <span>anaghb1010@gmail.com</span>
+                  </a>
+                </div>
+
+                <div className="hidden sm:flex items-center gap-2 text-zinc-600">
+                  <span>•</span>
+                  <span>New Delhi, India</span>
+                </div>
               </div>
             </motion.div>
 
-            {/* Bio card */}
-            <GlassmorphicCard>
-              <p className="text-sm text-slate-300 leading-relaxed">
-                I am a Software Engineering student at Delhi Technological University (DTU)
-                with a strong passion for architecting resilient software systems, designing
-                clean full-stack applications, and building machine learning models.
-              </p>
-              <p className="text-sm text-slate-300 leading-relaxed mt-4">
-                My professional experience includes software engineering roles at Coforge Technologies
-                and DLED Labs (IIT Ropar), where I developed production RESTful APIs,
-                implemented robust error-handling mechanisms and database field guides, and optimized
-                state handling and Git workflows.
-              </p>
-              <p className="text-sm text-slate-300 leading-relaxed mt-4">
-                I enjoy turning ideas into high-performance products — whether it's an AI-powered travel planner
-                using Google Gemini API, a responsive e-commerce platform with RBAC and payment gateways,
-                or deep learning computer vision pipelines.
-              </p>
+            {/* Right Column: Interactive Terminal Spec */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              className="lg:col-span-5"
+            >
+              <TerminalCard />
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
-              <div className="grid grid-cols-2 gap-x-6 gap-y-4 mt-8 text-sm">
-                {[
-                  { label: "Name", value: "Anagh Bajpai" },
-                  { label: "Email", value: "anaghb1010@gmail.com", small: true },
-                  { label: "Location", value: "New Delhi, India" },
-                  { label: "Phone", value: "+91-9821112573" },
-                ].map(({ label, value, small }) => (
-                  <div key={label} className="space-y-0.5">
-                    <div className="text-xs text-slate-500 uppercase tracking-wide">{label}</div>
-                    <div className={`font-medium text-white ${small ? "text-xs" : ""}`}>{value}</div>
-                  </div>
-                ))}
-                <div className="col-span-2 space-y-0.5">
-                  <div className="text-xs text-slate-500 uppercase tracking-wide">Availability</div>
-                  <div className="font-medium text-green-400">Open to opportunities</div>
+      {/* Metrics Ribbon */}
+      <section className="py-8 border-y border-zinc-900 bg-zinc-950/40 backdrop-blur-sm">
+        <div className="container max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+            {stats.map((stat, idx) => (
+              <div key={idx} className="space-y-1">
+                <div className="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-white">
+                  {stat.value}
+                </div>
+                <div className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+                  {stat.label}
+                </div>
+                <div className="text-[11px] font-mono text-zinc-500">
+                  {stat.sub}
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              <div className="mt-6">
-                <a href="/resume.pdf" download="Anagh_Bajpai_Resume.pdf">
-                  <Button className="bg-slate-700 hover:bg-slate-600 text-white border-0 text-sm">
-                    Download Resume
-                  </Button>
-                </a>
+      {/* About Section */}
+      <section id="about" className="py-24 border-b border-zinc-900">
+        <div className="container max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="space-y-4 mb-12">
+            <span className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold block">
+              01 // Background & Philosophy
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+              Engineering with precision, curiosity, and speed.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            <div className="md:col-span-7 space-y-4 text-zinc-400 leading-relaxed text-sm sm:text-base">
+              <p>
+                I am a Software Engineering undergraduate at{" "}
+                <span className="text-zinc-200 font-medium">Delhi Technological University (DTU)</span>{" "}
+                with a cumulative CGPA of <span className="text-emerald-400 font-mono font-medium">8.86/10</span>.
+                My background spans distributed web architectures, high-concurrency backend workflows,
+                and applied deep learning.
+              </p>
+              <p>
+                My professional experience includes software engineering roles at{" "}
+                <span className="text-zinc-200 font-medium">Coforge Technologies</span>, where I
+                engineered database blueprints and robust error-handling logs across enterprise modules,
+                and at <span className="text-zinc-200 font-medium">DLED Labs (IIT Ropar)</span>, building
+                scalable MERN applications with secure JWT authentication and optimized Git workflows.
+              </p>
+              <p>
+                I prioritize writing type-safe, maintainable, and well-tested code. Whether it's crafting
+                AI-driven user experiences with Google Gemini API and structured Zod validation, or
+                training ResNet feature extractors for computer vision pipelines, I love turning complex
+                technical challenges into elegant, resilient products.
+              </p>
+
+              <div className="pt-4 flex flex-wrap gap-2 text-xs font-mono">
+                <span className="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300">
+                  🏛️ Delhi Technological University ('27)
+                </span>
+                <span className="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300">
+                  🏆 1st Place Winner Execute 5.0
+                </span>
+                <span className="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300">
+                  📜 Andrew Ng ML Certified
+                </span>
               </div>
-            </GlassmorphicCard>
-          </div>
-        </div>
-      </section>
+            </div>
 
-      {/* ── Skills ─────────────────────────────────────── */}
-      <section id="skills" className="py-24 border-t border-slate-800/60">
-        <div className="container">
-          <SectionHeading title="Skills" subtitle="Technologies I work with" />
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-12">
-            <SkillBadge name="TypeScript & JS" level={92} />
-            <SkillBadge name="React & Next.js" level={90} />
-            <SkillBadge name="Python" level={88} />
-            <SkillBadge name="C / C++" level={85} />
-            <SkillBadge name="PostgreSQL & SQL" level={86} />
-            <SkillBadge name="MongoDB & Mongoose" level={88} />
-            <SkillBadge name="Tailwind CSS" level={92} />
-            <SkillBadge name="PyTorch & OpenCV" level={82} />
-            <SkillBadge name="Supabase & Prisma" level={85} />
-            <SkillBadge name="REST APIs & Flask" level={86} />
-            <SkillBadge name="Git & GitHub" level={90} />
-            <SkillBadge name="System Design & DSA" level={88} />
-          </div>
-        </div>
-      </section>
-
-      {/* ── Projects ───────────────────────────────────── */}
-      <section id="projects" className="py-24 border-t border-slate-800/60">
-        <div className="container">
-          <SectionHeading title="Featured Projects" subtitle="Some of my recent work" />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-            <ProjectCard
-              title="Roamwise — AI Travel Planner"
-              description="A full-stack AI travel planner using Next.js, Google Gemini API, and OpenStreetMap Nominatim to generate personalized day-by-day itineraries with geocoding, AI revisions, Supabase Auth, PostgreSQL, Prisma ORM, and expense tracking."
-              tags={["Next.js", "TypeScript", "Gemini API", "Supabase", "PostgreSQL", "Prisma"]}
-              image="/project1.png?height=400&width=600"
-              demoUrl="https://roamwise-one.vercel.app/"
-              repoUrl="https://github.com/Anagh1010/Roamwise"
-            />
-            <ProjectCard
-              title="QuickCart — E-Commerce Platform"
-              description="Full-stack e-commerce platform with Next.js and MongoDB featuring cart, checkout, order tracking, admin dashboards, Clerk RBAC, Razorpay payments, Cloudinary media, and Inngest event synchronization."
-              tags={["Next.js", "MongoDB", "Clerk", "Razorpay", "Inngest", "Tailwind CSS"]}
-              image="/project2.png?height=400&width=600"
-              demoUrl="https://quickcart-ecom-alpha.vercel.app/"
-              repoUrl="https://github.com/Anagh1010/QuickCart"
-            />
-            <ProjectCard
-              title="Object Detection & Classification"
-              description="End-to-end 20-class pipeline on Pascal VOC 2012 (17K images). 2048-dim ResNet-50 embeddings, ensemble models — 87.25% accuracy and 0.993 macro AUC with sliding-window inference."
-              tags={["Python", "PyTorch", "ResNet-50", "Scikit-learn", "OpenCV", "Flask"]}
-              image="/project3.png?height=400&width=600"
-              repoUrl="https://github.com/Anagh1010/Object-Detection"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* ── Experience ─────────────────────────────────── */}
-      <section id="experience" className="py-24 border-t border-slate-800/60">
-        <div className="container max-w-3xl">
-          <SectionHeading title="Experience & Milestones" subtitle="My professional journey" />
-          <div className="mt-12">
-            <Timeline />
-          </div>
-        </div>
-      </section>
-
-      {/* ── Contact ────────────────────────────────────── */}
-      <section id="contact" className="py-24 border-t border-slate-800/60">
-        <div className="container">
-          <SectionHeading title="Get In Touch" subtitle="Let's work together" />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start mt-12">
-            <GlassmorphicCard>
-              <h3 className="text-lg font-semibold mb-5">Contact Information</h3>
-              <div className="space-y-4">
-                {[
-                  { icon: Mail, label: "Email", value: "anaghb1010@gmail.com" },
-                  { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/anagh-bajpai-b928182a7" },
-                  { icon: Github, label: "GitHub", value: "github.com/Anagh1010" },
-                ].map(({ icon: Icon, label, value }) => (
-                  <div key={label} className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-slate-700/60 flex items-center justify-center shrink-0">
-                      <Icon className="h-4 w-4 text-indigo-400" />
-                    </div>
-                    <div>
-                      <div className="text-xs text-slate-500">{label}</div>
-                      <div className="text-sm font-medium text-white">{value}</div>
-                    </div>
+            {/* Education Highlight Card */}
+            <div className="md:col-span-5 space-y-4">
+              <div className="p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800/80 space-y-4">
+                <div className="flex items-center gap-3 pb-3 border-b border-zinc-800">
+                  <div className="p-2 rounded-xl bg-zinc-800 text-emerald-400">
+                    <GraduationCap className="w-5 h-5" />
                   </div>
-                ))}
-              </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-zinc-100">Academic Standing</h3>
+                    <p className="text-xs font-mono text-zinc-500">Degree & High School Milestones</p>
+                  </div>
+                </div>
 
-              <div className="mt-6 pt-5 border-t border-slate-700/50">
-                <div className="flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-green-400 shrink-0" />
-                  <span className="text-sm text-slate-300">
-                    Open to internships and full-time software engineering roles
-                  </span>
+                <div className="space-y-3 font-mono text-xs">
+                  <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800/80">
+                    <div className="flex justify-between items-start text-zinc-300">
+                      <span className="font-semibold text-zinc-100">Delhi Technological University</span>
+                      <span className="text-emerald-400 font-bold">8.86 CGPA</span>
+                    </div>
+                    <p className="text-zinc-500 text-[11px] mt-1 font-sans">B.Tech in Software Engineering (2023 - 2027)</p>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800/80">
+                    <div className="flex justify-between items-start text-zinc-300">
+                      <span className="font-semibold text-zinc-100">Maxfort School Dwarka</span>
+                      <span className="text-zinc-300">95% (XII CBSE)</span>
+                    </div>
+                    <p className="text-zinc-500 text-[11px] mt-1 font-sans">Awarded CS School Trophy | Class X: 94.6%</p>
+                  </div>
+                </div>
+
+                <div className="pt-2 text-[11px] text-zinc-500 flex items-center gap-1.5 font-mono">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />
+                  <span>CS Fundamentals: DSA, System Design, DBMS, OS, Networks</span>
                 </div>
               </div>
-            </GlassmorphicCard>
-
-            <ContactFormEmailJS />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ── Footer ─────────────────────────────────────── */}
-      <footer className="border-t border-slate-800/60 py-8">
-        <div className="container flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div>
-            <Link href="/" className="text-base font-semibold text-white">
-              Anagh <span className="text-indigo-400">Bajpai</span>
-            </Link>
-            <p className="text-xs text-slate-500 mt-1">
-              © {new Date().getFullYear()} Anagh Bajpai. All rights reserved.
+      {/* Featured Projects Section */}
+      <section id="projects" className="py-24 border-b border-zinc-900">
+        <div className="container max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+            <div className="space-y-3">
+              <span className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold block">
+                02 // Selected Works
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+                Featured Projects
+              </h2>
+            </div>
+            <p className="text-xs sm:text-sm font-mono text-zinc-500 max-w-md">
+              Full-stack production web apps, generative AI workflows, and machine learning pipelines.
             </p>
           </div>
-          <div className="flex gap-2">
-            {[
-              { href: "https://github.com/Anagh1010", icon: Github, label: "GitHub" },
-              { href: "https://www.linkedin.com/in/anagh-bajpai-b928182a7/", icon: Linkedin, label: "LinkedIn" },
-              { href: "mailto:anaghb1010@gmail.com", icon: Mail, label: "Email" },
-            ].map(({ href, icon: Icon, label }) => (
-              <Link key={label} href={href} target={href.startsWith("mailto") ? undefined : "_blank"} rel="noopener noreferrer">
-                <Button variant="ghost" size="icon" className="rounded-full bg-slate-800/50 hover:bg-slate-700 text-slate-400 hover:text-white h-9 w-9">
-                  <Icon className="h-4 w-4" />
-                  <span className="sr-only">{label}</span>
-                </Button>
-              </Link>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.map((project, index) => (
+              <ProjectCard key={project.title} project={project} index={index} />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Skills Matrix Section */}
+      <section id="skills" className="py-24 border-b border-zinc-900">
+        <div className="container max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+            <div className="space-y-3">
+              <span className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold block">
+                03 // Technical Arsenal
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+                Skills & Technologies
+              </h2>
+            </div>
+            <p className="text-xs sm:text-sm font-mono text-zinc-500 max-w-md">
+              Hands-on proficiency across languages, modern frameworks, data infrastructure, and AI libraries.
+            </p>
+          </div>
+
+          <SkillsMatrix />
+        </div>
+      </section>
+
+      {/* Work Experience & Milestones Section */}
+      <section id="experience" className="py-24 border-b border-zinc-900">
+        <div className="container max-w-4xl mx-auto px-4 sm:px-6">
+          <div className="space-y-3 mb-12">
+            <span className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold block">
+              04 // Career Journey
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+              Experience & Milestones
+            </h2>
+            <p className="text-xs sm:text-sm font-mono text-zinc-500">
+              Professional software engineering roles, academic honors, and hackathon wins.
+            </p>
+          </div>
+
+          <Timeline />
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-24 border-b border-zinc-900">
+        <div className="container max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="space-y-3 mb-12">
+            <span className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold block">
+              05 // Get In Touch
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+              Initiate Contact
+            </h2>
+            <p className="text-xs sm:text-sm font-mono text-zinc-500 max-w-lg">
+              Have an open engineering internship, full-time opportunity, or want to discuss a project? Drop a message below.
+            </p>
+          </div>
+
+          <ContactSection />
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 bg-zinc-950">
+        <div className="container max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs font-mono text-zinc-500">
+          <div className="flex items-center gap-3">
+            <span className="font-bold text-zinc-200">Anagh Bajpai</span>
+            <span>•</span>
+            <span>© {new Date().getFullYear()} All rights reserved.</span>
+          </div>
+
+          <div className="text-center sm:text-right text-[11px] text-zinc-600">
+            Crafted with Next.js 16, TypeScript, Tailwind CSS, Google Sans & JetBrains Mono.
+          </div>
+
+          <div className="flex items-center gap-4 text-zinc-400">
+            <a
+              href="https://github.com/Anagh1010"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/anagh-bajpai-b928182a7/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-white transition-colors"
+            >
+              LinkedIn
+            </a>
+            <a
+              href="mailto:anaghb1010@gmail.com"
+              className="hover:text-white transition-colors"
+            >
+              Email
+            </a>
           </div>
         </div>
       </footer>
     </div>
-  );
+  )
 }

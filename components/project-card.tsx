@@ -1,80 +1,142 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowUpRight, Github } from "lucide-react"
+import { ArrowUpRight, Github, ExternalLink, Sparkles, CheckCircle2 } from "lucide-react"
 import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 
-interface ProjectCardProps {
+export interface ProjectData {
   title: string
+  subtitle: string
+  category: "Full-Stack" | "AI / ML" | "Full-Stack • AI"
   description: string
+  architecturePoints: string[]
   tags: string[]
   image?: string
   demoUrl?: string
   repoUrl: string
+  featured?: boolean
 }
 
-export function ProjectCard({ title, description, tags, image, demoUrl, repoUrl }: ProjectCardProps) {
+export function ProjectCard({ project, index }: { project: ProjectData; index: number }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
       viewport={{ once: true }}
-      className="group h-full"
+      transition={{ duration: 0.4, delay: index * 0.1 }}
+      className="group relative rounded-2xl bg-zinc-900/40 border border-zinc-800/80 hover:border-zinc-700 transition-all overflow-hidden flex flex-col justify-between"
     >
-      <div className="relative h-full flex flex-col rounded-xl bg-slate-800/60 border border-slate-700/60 overflow-hidden hover:border-indigo-500/40 transition-colors duration-300">
-        {/* Image */}
-        <div className="relative overflow-hidden h-44 shrink-0">
+      {/* Top Banner & Image / Preview Area */}
+      <div className="relative overflow-hidden aspect-[16/9] bg-zinc-950 border-b border-zinc-800/80">
+        {project.image ? (
           <img
-            src={image || "/placeholder.svg"}
-            alt={title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover object-top opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-500"
           />
-          <div className="absolute inset-0 bg-slate-900/30" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-zinc-900/50">
+            <span className="font-mono text-xs text-zinc-600">Technical Demo / System Pipeline</span>
+          </div>
+        )}
+
+        {/* Gradient Overlay for subtle depth */}
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-80" />
+
+        {/* Category Pill */}
+        <div className="absolute top-3 left-3 z-10">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono font-medium bg-zinc-950/80 text-zinc-300 border border-zinc-800/80 backdrop-blur-md">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            {project.category}
+          </span>
         </div>
 
-        {/* Body */}
-        <div className="p-5 flex flex-col flex-grow">
-          <h3 className="text-base font-semibold text-white mb-1.5">{title}</h3>
-          <p className="text-sm text-slate-400 mb-4 leading-relaxed flex-grow">{description}</p>
+        {/* Action Link Icons on Top Right */}
+        <div className="absolute top-3 right-3 z-10 flex items-center gap-1.5">
+          {project.demoUrl && (
+            <a
+              href={project.demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Live Demo"
+              className="p-1.5 rounded-lg bg-zinc-950/80 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-zinc-800 backdrop-blur-md transition-colors"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          )}
+          <a
+            href={project.repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub Repository"
+            className="p-1.5 rounded-lg bg-zinc-950/80 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-zinc-800 backdrop-blur-md transition-colors"
+          >
+            <Github className="w-3.5 h-3.5" />
+          </a>
+        </div>
+      </div>
 
-          <div className="flex flex-wrap gap-1.5 mb-4">
-            {tags.map((tag, index) => (
-              <Badge
-                key={index}
-                variant="secondary"
-                className="bg-slate-700/60 hover:bg-slate-700 text-slate-300 text-xs px-2 py-0.5 border-0"
+      {/* Project Content */}
+      <div className="p-6 flex flex-col flex-grow justify-between space-y-5">
+        <div className="space-y-3">
+          <div>
+            <span className="text-[11px] font-mono text-zinc-500 uppercase tracking-wider block mb-1">
+              {project.subtitle}
+            </span>
+            <h3 className="text-xl font-bold tracking-tight text-zinc-100 group-hover:text-white transition-colors flex items-center justify-between">
+              <span>{project.title}</span>
+            </h3>
+          </div>
+
+          <p className="text-sm text-zinc-400 leading-relaxed">
+            {project.description}
+          </p>
+
+          {/* Architecture Highlights */}
+          <div className="space-y-1.5 pt-1">
+            {project.architecturePoints.map((point, idx) => (
+              <div key={idx} className="flex items-start gap-2 text-xs text-zinc-300">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400/80 shrink-0 mt-0.5" />
+                <span className="leading-snug">{point}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Footer: Tech Stack Pills & Direct Links */}
+        <div className="space-y-4 pt-3 border-t border-zinc-800/80">
+          <div className="flex flex-wrap gap-1.5">
+            {project.tags.map((tag) => (
+              <span
+                key={tag}
+                className="px-2 py-0.5 rounded text-[11px] font-mono bg-zinc-900 border border-zinc-800 text-zinc-400"
               >
                 {tag}
-              </Badge>
+              </span>
             ))}
           </div>
 
-          <div className="flex items-center gap-2 pt-3 border-t border-slate-700/50">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-slate-400 hover:text-white hover:bg-slate-700/50 h-8 px-2 text-xs"
-              asChild
+          <div className="flex items-center gap-2 pt-1">
+            <Link
+              href={project.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-xs font-mono font-medium text-zinc-300 hover:text-white transition-all"
             >
-              <Link href={repoUrl} target="_blank" rel="noopener noreferrer">
-                <Github className="mr-1.5 h-3.5 w-3.5" />
-                Source
-              </Link>
-            </Button>
-            {demoUrl && (
-              <Button
-                size="sm"
-                className="ml-auto bg-indigo-600 hover:bg-indigo-500 text-white border-0 h-8 px-3 text-xs"
-                asChild
+              <Github className="w-3.5 h-3.5" />
+              <span>Source Code</span>
+            </Link>
+
+            {project.demoUrl && (
+              <Link
+                href={project.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-medium transition-all shadow-sm"
               >
-                <Link href={demoUrl} target="_blank" rel="noopener noreferrer">
-                  Live Demo
-                  <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
-                </Link>
-              </Button>
+                <span>Live Preview</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </Link>
             )}
           </div>
         </div>

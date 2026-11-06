@@ -1,32 +1,33 @@
-import type { Metadata } from 'next'
-import { DM_Sans, JetBrains_Mono } from 'next/font/google'
-import './globals.css'
-
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  variable: '--font-sans',
-  weight: ['300', '400', '500', '600', '700', '800'],
-  display: 'swap',
-})
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  variable: '--font-mono',
-  weight: ['300', '400', '500', '600'],
-  display: 'swap',
-})
+import type { Metadata, Viewport } from "next"
+import "./globals.css"
 
 export const metadata: Metadata = {
-  title: 'Anagh Bajpai | Portfolio',
+  title: "Anagh Bajpai — Software Engineer",
   description:
-    'Portfolio of Anagh Bajpai — Software Engineering student at DTU, full-stack developer, and AI/ML enthusiast.',
+    "Full-Stack Developer & ML Engineer. B.Tech Software Engineering student at DTU, New Delhi. Building production-grade web apps and AI pipelines.",
+  keywords: ["Anagh Bajpai", "Software Engineer", "Full-Stack", "Next.js", "React", "Machine Learning", "DTU"],
+  authors: [{ name: "Anagh Bajpai" }],
+  openGraph: {
+    title: "Anagh Bajpai — Software Engineer",
+    description: "Full-Stack Developer & ML Engineer based in New Delhi.",
+    type: "website",
+  },
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a0a0a",
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${dmSans.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className="dark">
+      <head>
+        <link rel="preconnect" href="https://fonts.cdnfonts.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body>{children}</body>
     </html>
   )
