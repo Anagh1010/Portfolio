@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Workspace } from "@/components/portfolio/workspace";
+import { Titlebar, Workspace } from "@/components/portfolio/workspace";
 import {
   AboutSection,
   ContactSection,
@@ -11,7 +11,7 @@ import {
   SkillsSection,
   TerminalSection,
 } from "@/components/portfolio/portfolio-sections";
-import { terminalCommands, type PortfolioTab } from "@/data/portfolio";
+import { profile, terminalCommands, type PortfolioTab } from "@/data/portfolio";
 
 const welcomeLines = ["Welcome to anagh.dev shell.", "Type `help` to explore the portfolio."];
 
@@ -29,12 +29,17 @@ export default function Home() {
       setTerminalInput("");
       return;
     }
+    if (command === "resume") {
+      window.open(profile.resume, "_blank", "noopener");
+    }
     const response = terminalCommands[command] ?? `zsh: command not found: ${command}. Type 'help' for available commands.`;
     setTerminalLines((lines) => [...lines, `anagh@portfolio:~$ ${raw}`, response]);
     setTerminalInput("");
   };
 
-  return <main>
+  return <main className="portfolio-page">
+    <div className="ambient-background" aria-hidden="true" />
+    <Titlebar />
     <Workspace activeTab={activeTab} expanded={expanded} onSelectTab={setActiveTab} onToggleExplorer={() => setExpanded((open) => !open)} />
     <AboutSection />
     <SkillsSection />

@@ -23,6 +23,8 @@ export const projects = [
     name: "Roamwise",
     type: "AI Travel Planner",
     period: "2026",
+    liveUrl: "https://roamwise-one.vercel.app/",
+    sourceUrl: "https://github.com/Anagh1010/Roamwise",
     stack: ["Next.js", "React", "TypeScript", "Gemini API", "PostgreSQL"],
     summary: "A full-stack AI travel planner for editable, day-by-day itineraries.",
     details: [
@@ -35,6 +37,8 @@ export const projects = [
     name: "QuickCart",
     type: "Full-Stack E-Commerce",
     period: "2026",
+    liveUrl: "https://quickcart-ecom-alpha.vercel.app/",
+    sourceUrl: "https://github.com/Anagh1010/QuickCart",
     stack: ["Next.js", "React", "MongoDB", "Razorpay", "Cloudinary"],
     summary: "An e-commerce platform spanning discovery, checkout, order tracking, and seller administration.",
     details: [
@@ -47,6 +51,7 @@ export const projects = [
     name: "Object Detection & Classification",
     type: "Machine Learning",
     period: "2025",
+    sourceUrl: "https://github.com/Anagh1010/Object-Detection",
     stack: ["Python", "PyTorch", "OpenCV", "Scikit-learn", "Flask"],
     summary: "A 20-class recognition pipeline trained and evaluated on Pascal VOC 2012.",
     details: [

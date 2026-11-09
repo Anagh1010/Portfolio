@@ -1,26 +1,25 @@
 import { motion } from "framer-motion";
 import {
-  BriefcaseBusiness, ChevronDown, ChevronRight, FileCode2, Files, Folder,
+  BriefcaseBusiness, ChevronDown, ChevronRight, Files, Folder,
   Github, Linkedin, Search, Settings, Terminal, UserRound,
 } from "lucide-react";
 import { CodeContent } from "@/components/portfolio/code-content";
+import { FileIcon, PortfolioFileIcon } from "@/components/portfolio/file-icon";
 import { portfolioTabs, profile, technologies, type PortfolioTab } from "@/data/portfolio";
 
 type WorkspaceProps = { activeTab: PortfolioTab; expanded: boolean; onSelectTab: (tab: PortfolioTab) => void; onToggleExplorer: () => void };
-const navItems = [["about", "About"], ["experience", "Experience"], ["projects", "Projects"], ["skills", "Skills"], ["contact", "Contact"]] as const;
-
-function fileIcon(tab: PortfolioTab) { return <FileCode2 size={14} className={tab.endsWith(".md") ? "file-md" : "file-ts"} />; }
+const navItems = [["about", "About"], ["experience", "Experience"], ["projects", "Projects"], ["skills", "Skills"], ["highlights", "Milestones"], ["terminal", "Terminal"], ["contact", "Contact"]] as const;
 
 function ActivityRail() {
   return <aside className="activity-rail" aria-label="Workspace tools"><Files size={22} className="rail-active" /><Search size={21} /><UserRound size={21} /><BriefcaseBusiness size={21} /><Terminal size={21} /><Settings size={21} className="rail-bottom" /></aside>;
 }
 
 function Explorer({ activeTab, expanded, onSelectTab, onToggleExplorer }: WorkspaceProps) {
-  return <aside className="explorer"><div className="explorer-heading">EXPLORER <span>•••</span></div><button className="tree-root" onClick={onToggleExplorer}>{expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />} anagh-bajpai</button>{expanded && <div className="tree-children"><div className="tree-folder"><ChevronDown size={13} /><Folder size={14} /> src</div>{portfolioTabs.map((tab) => <button className={`tree-file ${tab === activeTab ? "selected" : ""}`} key={tab} onClick={() => onSelectTab(tab)}>{fileIcon(tab)}{tab}</button>)}</div>}<div className="explorer-links"><a href={profile.github} target="_blank" rel="noreferrer"><Github size={14} />GitHub</a><a href={profile.linkedin} target="_blank" rel="noreferrer"><Linkedin size={14} />LinkedIn</a><a href={profile.resume} target="_blank"><FileCode2 size={14} />resume.pdf</a></div></aside>;
+  return <aside className="explorer"><div className="explorer-heading">EXPLORER <span>•••</span></div><button className="tree-root" onClick={onToggleExplorer}>{expanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />} anagh-bajpai</button>{expanded && <div className="tree-children"><div className="tree-folder"><ChevronDown size={13} /><Folder size={14} /> src</div>{portfolioTabs.map((tab) => <button className={`tree-file ${tab === activeTab ? "selected" : ""}`} key={tab} onClick={() => onSelectTab(tab)}><PortfolioFileIcon file={tab} />{tab}</button>)}</div>}<div className="explorer-links"><a href={profile.github} target="_blank" rel="noreferrer"><Github size={14} />GitHub</a><a href={profile.linkedin} target="_blank" rel="noreferrer"><Linkedin size={14} />LinkedIn</a><a href={profile.resume} target="_blank"><FileIcon file="resume.pdf" />resume.pdf</a></div></aside>;
 }
 
-function Titlebar() {
-  return <header className="vscode-titlebar"><a className="wordmark" href="#home">anaghbajpai.dev</a><nav>{navItems.map(([id, label]) => <a key={id} href={`#${id}`}>{label}</a>)}</nav><a className="command-palette" href="#contact"><span>⌘</span>K</a></header>;
+export function Titlebar() {
+  return <header className="vscode-titlebar"><a className="wordmark" href="#home">anaghbajpai.dev</a><nav>{navItems.map(([id, label]) => <a className={id === "terminal" ? "terminal-nav-link" : undefined} key={id} href={`#${id}`}>{id === "terminal" && <Terminal size={14} aria-hidden="true" />}{label}</a>)}</nav><a className="command-palette" href="#contact"><span>⌘</span>K</a></header>;
 }
 
 function Hero() {
@@ -28,9 +27,9 @@ function Hero() {
 }
 
 function Editor({ activeTab, onSelectTab }: Pick<WorkspaceProps, "activeTab" | "onSelectTab">) {
-  return <section className="editor-window" id="editor"><div className="tabbar">{portfolioTabs.map((tab) => <button key={tab} className={tab === activeTab ? "active-tab" : ""} onClick={() => onSelectTab(tab)}>{fileIcon(tab)}{tab}</button>)}</div><div className="code-area"><CodeContent tab={activeTab} /></div><div className="editor-footer"><span>◉ 0 problems</span><span>Ln 14, Col 20</span><span>TypeScript React</span></div></section>;
+  return <section className="editor-window" id="editor"><div className="tabbar">{portfolioTabs.map((tab) => <button key={tab} className={tab === activeTab ? "active-tab" : ""} onClick={() => onSelectTab(tab)}><PortfolioFileIcon file={tab} />{tab}</button>)}</div><div className="code-area"><CodeContent tab={activeTab} /></div><div className="editor-footer"><span>◉ 0 problems</span><span>Ln 14, Col 20</span><span>TypeScript React</span></div></section>;
 }
 
 export function Workspace(props: WorkspaceProps) {
-  return <div className="workspace-frame"><Titlebar /><div className="workspace-body"><ActivityRail /><Explorer {...props} /><main className="workspace-main"><Hero /><Editor activeTab={props.activeTab} onSelectTab={props.onSelectTab} /><div className="tech-marquee" aria-label="Technical skills"><div>{[...technologies, ...technologies].map((tech, index) => <span key={`${tech}-${index}`}>{tech}<b>✦</b></span>)}</div></div></main></div></div>;
+  return <div className="workspace-frame"><div className="workspace-body"><ActivityRail /><Explorer {...props} /><main className="workspace-main"><Hero /><Editor activeTab={props.activeTab} onSelectTab={props.onSelectTab} /><div className="tech-marquee" aria-label="Technical skills"><div>{[...technologies, ...technologies].map((tech, index) => <span key={`${tech}-${index}`}>{tech}<b>✦</b></span>)}</div></div></main></div></div>;
 }
