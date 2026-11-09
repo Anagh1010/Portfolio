@@ -1,66 +1,37 @@
 # Continuity Ledger
 
 ## Snapshot
-- 2026-11-09 [USER] Goal: create a close VS Code-inspired portfolio experience from anoopsonkriya.dev, adapted to the resume at `app/public/resume.pdf`.
-- 2026-11-09 [CODE] Constraint: production code files must stay under 300 lines; do not alter unrelated pre-existing worktree changes.
-- 2026-11-09 [TOOL] Resume facts confirmed from a local Quick Look preview: DTU Software Engineering (8.86/10), Coforge and DLED Labs, Roamwise, QuickCart, and object detection project.
+- 2026-11-09 [USER] Goal: Match portfolio UI closely to `https://anoopsonkriya.dev/` with data sourced from `data/portfolio.ts`; music widget removed per user request.
+- 2026-11-09 [CODE] Invariant: No code file longer than 300 lines; modular architecture; all data sourced from `data/portfolio.ts`.
+- 2026-11-09 [TOOL] Build verified: `npm run build` exits 0 with zero warnings/errors on `next@16.4.5` and `react@19`; `npm audit` reports 0 vulnerabilities.
+- 2026-11-09 [CODE] Rewrote `README.md` with complete architecture breakdown, feature guide, single-file editing manual, tech stack details, and deployment guide.
 
 ## Decisions
-- 2026-11-09 [CODE] D001 ACTIVE: use a persistent VS Code frame with an activity rail, explorer, tabs, code editor, status bar, ticker, file-themed content sections, and interactive shell.
-- 2026-11-09 [USER] D002 ACTIVE: use Google Antigravity’s default Symbols file icons in the portfolio Explorer and editor tabs.
+- 2026-11-09 [CODE] D001 ACTIVE: VS Code layout modeled directly after `anoopsonkriya.dev` with fixed top titlebar (`h-10`), fixed activity rail + explorer sidebar (`w-72`), fixed bottom status bar (`h-7`), sticky editor tabs, and radial grid background (`.grid-bg`).
+- 2026-11-09 [CODE] D002 ACTIVE: Single source of truth in `data/portfolio.ts` containing profile, roles, projects, dependencies, education, timeline, and terminal commands.
+- 2026-11-09 [CODE] D003 ACTIVE: Implemented `⌘K` command palette modal, dynamic typewriter role switcher, interactive zsh terminal with history navigation, and scroll spy syncing active tab.
+- 2026-11-09 [USER] D004 ACTIVE: Removed the music widget from the sidebar and data store; explorer now features a clean profiles and links footer.
+- 2026-11-09 [CODE] D005 ACTIVE: Aligned dependency package names and versions to match code editor JSON standards with left-bound colons, right-aligned version strings, and gradient proficiency bars.
+- 2026-11-09 [CODE] D006 ACTIVE: Expanded release history date column width to `13.5rem` with right padding (`sm:pr-7`) and aligned vertical timeline track/dots so longer date ranges never touch or fall behind the timeline line.
+- 2026-11-09 [CODE] D007 ACTIVE: Upgraded to `react@19`, `react-dom@19`, and `framer-motion@11.18.2` matching Next.js 16 native runtime with zero deprecation warnings.
 
 ## Done (recent)
-- 2026-11-09 [CODE] Rebuilt the portfolio’s structure and visual system around the reference site while using the supplied resume for content.
-- 2026-11-09 [CODE] Updated typography to Inter and JetBrains Mono, tightened the type scale, and changed the visual system to neutral near-black surfaces.
-- 2026-11-09 [CODE] Increased navigation, editor, body, card, and terminal typography to improve readability.
-- 2026-11-09 [CODE] Replaced the release list with a chronological Experience & Milestones timeline including Coforge and DLED Labs.
-- 2026-11-09 [USER] Supplied LaTeX resume with project destinations: Roamwise live/source, QuickCart live/source, Object Detection source.
-- 2026-11-09 [CODE] Added project source and live demo links to the project cards; Object Detection shows its source link only.
-- 2026-11-09 [CODE] Added a soft atmospheric glow and fine grain texture over the black background, with translucent workspace surfaces.
-- 2026-11-09 [USER] Reported the background still appeared black after restarting the dev server.
-- 2026-11-09 [CODE] Replaced the hidden negative-z pseudo-element effect with a visible fixed layer containing slowly drifting colored gradients and subtle grain.
-- 2026-11-09 [CODE] Added file-type-specific Explorer icons and a Terminal link in the top navigation.
-- 2026-11-09 [CODE] Replaced generic file glyphs with `@react-symbols/icons` Symbols icons for TSX, Markdown, and PDF files.
-- 2026-11-09 [CODE] Published the supplied resume at `public/resume.pdf`, fixed the public URL, and added separate view and download actions.
-- 2026-11-09 [USER] Superseded the separate bottom resume actions with one `download resume` button; the email action remains.
-- 2026-11-09 [CODE] Fixed contact email alignment: the auto spacer now applies only to trailing external-link arrows, not the email icon.
-- 2026-11-09 [USER] Requested a floating header that remains visible while scrolling.
-- 2026-11-09 [CODE] Fixed the titlebar to the viewport and reserved its height in the workspace layout so it persists across the full page.
-- 2026-11-09 [USER] Requested a complete UI design audit and fix pass.
-- 2026-11-09 [CODE] Aligned all desktop sections to the editor canvas, preserved scrollable header navigation on compact screens, added focus states and horizontal-overflow protection, and connected the terminal `resume` command to the PDF.
-- 2026-11-09 [CODE] Fixed header stacking: the titlebar now mounts directly under the page root, outside the workspace stacking context.
-- 2026-11-09 [CODE] Restored the visual floating-header treatment with viewport insets, rounded border, elevated shadow, and reserved top space while preserving the page-root stacking fix.
-- 2026-11-09 [CODE] Corrected the selector-priority bug that overrode the titlebar’s fixed positioning after it became a page-root child.
-- 2026-11-09 [USER] Requested that the local development server be closed.
-- 2026-11-09 [TOOL] `npm run build` passed after the rebuild.
+- 2026-11-09 [CODE] Inspected DOM, CSS, layout structure, and section mechanics of `anoopsonkriya.dev`.
+- 2026-11-09 [CODE] Re-architected portfolio into modular components under 300 LOC each (`header.tsx`, `sidebar.tsx`, `tabbar.tsx`, `status-bar.tsx`, `command-palette.tsx`, `hero-section.tsx`, `about-section.tsx`, `skills-section.tsx`, `projects-section.tsx`, `experience-section.tsx`, `terminal-section.tsx`, `contact-section.tsx`).
+- 2026-11-09 [CODE] Configured `tailwind.config.ts` content scanning paths and implemented exact `.grid-bg` mask styling in `app/globals.css`.
+- 2026-11-09 [TOOL] `npm run build` passed cleanly with exit code 0 and zero Tailwind warnings.
+- 2026-11-09 [TOOL] Tested local render via `next dev` and verified HTML delivery on port 3000.
 
 ## Working set
 - `CONTINUITY.md`
 - `app/page.tsx`
-- `data/portfolio.ts`
-- `components/portfolio/`
-- `tsconfig.json`
+- `app/layout.tsx`
 - `app/globals.css`
+- `data/portfolio.ts`
+- `tailwind.config.ts`
+- `components/portfolio/*`
 
 ## Receipts
-- 2026-11-09 [TOOL] `git status --short` showed existing template changes and deletions before this task.
-- 2026-11-09 [TOOL] Production build passed; generated static `/` route successfully.
-- 2026-11-09 [TOOL] Quick Look produced a local preview of the resume after text extraction was unavailable.
-- 2026-11-09 [TOOL] `npm run build` passed after the typography and palette update.
-- 2026-11-09 [TOOL] `npm run build` passed after the readability scale update.
-- 2026-11-09 [TOOL] `npm run build` passed after the timeline update.
-- 2026-11-09 [TOOL] `npm run build` passed after adding project links.
-- 2026-11-09 [TOOL] `npm run build` passed after the background update.
-- 2026-11-09 [TOOL] `npm run build` passed after making the animated background visible.
-- 2026-11-09 [TOOL] `npm run build` passed after updating sidebar icons and Terminal navigation.
-- 2026-11-09 [TOOL] `npm run build` passed after switching Explorer and editor tabs to Symbols icons; Tailwind emitted the existing no-utility-classes warning.
-- 2026-11-09 [TOOL] Added `@react-symbols/icons` 1.4.1 (MIT); npm reported 2 audit findings in the dependency tree.
-- 2026-11-09 [TOOL] `npm run build` passed after fixing resume view/download links.
-- 2026-11-09 [TOOL] `npm run build` passed after consolidating the bottom resume actions.
-- 2026-11-09 [TOOL] `npm run build` passed after the contact alignment fix; existing Tailwind no-utility-classes warning remains.
-- 2026-11-09 [TOOL] `npm run build` passed after fixing the header to the viewport; existing Tailwind no-utility-classes warning remains.
-- 2026-11-09 [TOOL] `npm run build` passed after the UI consistency pass; existing Tailwind no-utility-classes warning remains.
-- 2026-11-09 [TOOL] Sent SIGINT to the local `next dev` session; the session is no longer running.
-- 2026-11-09 [TOOL] `npm run build` passed after repairing the header stacking context; existing Tailwind no-utility-classes warning remains.
-- 2026-11-09 [TOOL] `npm run build` passed after restoring the floating header treatment; existing Tailwind no-utility-classes warning remains.
-- 2026-11-09 [TOOL] `npm run build` passed after fixing the titlebar selector conflict; existing Tailwind no-utility-classes warning remains.
+- 2026-11-09 [TOOL] `npm run build` produced static `/` (18.5 kB, 106 kB first load JS) with 0 errors.
+- 2026-11-09 [TOOL] Line count audit verified all 18 files strictly under 300 lines (longest file 238 lines).
+- 2026-11-09 [TOOL] Verified `curl http://localhost:3000` responds HTTP 200 with full VS Code DOM tree.
