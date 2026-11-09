@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Topbar } from "@/components/portfolio/topbar";
 import { Workspace } from "@/components/portfolio/workspace";
 import {
   AboutSection,
-  ContactAndFooter,
+  ContactSection,
   ExperienceSection,
+  HighlightsSection,
   ProjectsSection,
-  StackAndHighlights,
+  SkillsSection,
   TerminalSection,
 } from "@/components/portfolio/portfolio-sections";
 import { terminalCommands, type PortfolioTab } from "@/data/portfolio";
@@ -20,8 +20,6 @@ export default function Home() {
   const [terminalInput, setTerminalInput] = useState("");
   const [terminalLines, setTerminalLines] = useState<string[]>(welcomeLines);
   const [expanded, setExpanded] = useState(true);
-  const [mobileNav, setMobileNav] = useState(false);
-  const [openProject, setOpenProject] = useState<number | null>(null);
 
   const runCommand = (raw: string) => {
     const command = raw.trim().toLowerCase();
@@ -37,14 +35,13 @@ export default function Home() {
   };
 
   return <main>
-    <div className="ambient ambient-one" /><div className="ambient ambient-two" />
-    <Topbar mobileNav={mobileNav} onToggleMobileNav={() => setMobileNav((open) => !open)} onCloseMobileNav={() => setMobileNav(false)} />
     <Workspace activeTab={activeTab} expanded={expanded} onSelectTab={setActiveTab} onToggleExplorer={() => setExpanded((open) => !open)} />
     <AboutSection />
+    <SkillsSection />
     <ExperienceSection />
-    <ProjectsSection openProject={openProject} onToggleProject={(index) => setOpenProject((open) => open === index ? null : index)} />
-    <StackAndHighlights />
+    <ProjectsSection />
+    <HighlightsSection />
     <TerminalSection lines={terminalLines} input={terminalInput} onInputChange={setTerminalInput} onRun={runCommand} />
-    <ContactAndFooter />
+    <ContactSection />
   </main>;
 }
