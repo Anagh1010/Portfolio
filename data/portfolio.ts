@@ -117,10 +117,21 @@ export const strengths = [
   { score: "84", label: "Databases", detail: "PostgreSQL · MongoDB · Supabase" },
 ] as const;
 
-export const projects = [
+export interface ProjectItem {
+  name: string;
+  type: string;
+  period: string;
+  summary: string;
+  details: readonly string[] | string[];
+  stack: readonly string[] | string[];
+  sourceUrl?: string;
+  liveUrl?: string;
+}
+
+export const projects: ProjectItem[] = [
   {
     name: "Roamwise",
-    type: "Full-Stack · AI",
+    type: "Full-Stack · AI Travel Planner",
     period: "2026",
     liveUrl: "https://roamwise-one.vercel.app/",
     sourceUrl: "https://github.com/Anagh1010/Roamwise",
@@ -130,6 +141,19 @@ export const projects = [
       "Reliable AI workflows via structured JSON output & strict Zod validation for itinerary generation & travel diary revisions.",
       "Deterministic fallback preview mode when API key is unprovided.",
       "Secure trip management via Supabase Auth, PostgreSQL, and Prisma ORM with saved trips & expense tracking.",
+    ],
+  },
+  {
+    name: "CodeCompass",
+    type: "Full-Stack · AI Codebase Q&A",
+    period: "2026",
+    sourceUrl: "https://github.com/Anagh1010/codecompass",
+    stack: ["Java 27", "Spring Boot", "React", "TypeScript", "Vite", "Ollama", "Gemini API", "BM25", "RAG"],
+    summary: "An intelligent codebase exploration assistant that uses hybrid retrieval and LLMs to answer questions about local repositories with source citations.",
+    details: [
+      "Hybrid RAG pipeline combining BM25 keyword search, semantic embeddings, and code identifier matching with reciprocal-rank fusion and reranking.",
+      "Local-first AI architecture using Ollama (Qwen 2.5 Coder & Nomic Embeddings), with optional Gemini API integration for code-aware answers.",
+      "Context-aware retrieval with topic relevance checks, bounded source excerpts, and automatic citation generation with file paths and line ranges."
     ],
   },
   {
@@ -147,8 +171,8 @@ export const projects = [
     ],
   },
   {
-    name: "Object Detection & Classification",
-    type: "Computer Vision · Deep Learning",
+    name: "ObjectLens",
+    type: "Computer Vision · Deep Learning · Object Detection & Classification",
     period: "2025",
     sourceUrl: "https://github.com/Anagh1010/ObjectLens",
     stack: ["Python", "PyTorch", "ResNet-50", "Scikit-learn", "OpenCV", "Flask"],
@@ -197,13 +221,13 @@ export const experience = [
 
 export const terminalCommands: Record<string, string> = {
   help: "Available commands: help, about, projects, experience, skills, contact, resume, whoami, clear, ls",
-  about: "Anagh Bajpai — Software Engineering student at Delhi Technological University. CGPA: 8.86 / 10.",
-  projects: "1. Roamwise (AI Travel Planner)\n2. QuickCart (E-Commerce Platform)\n3. Object Detection (Pascal VOC 2012 Deep Learning)",
-  experience: "• Coforge Technologies Limited — Graduate Engineer Trainee\n• DLED Labs, IIT Ropar — Software Engineering Intern\n• Execute 5.0 Hackathon — 1st Place Winner",
+  about: `${profile.name} — ${profile.role} student at Delhi Technological University. CGPA: 8.86 / 10.`,
+  projects: projects.map((p, idx) => `${idx + 1}. ${p.name} (${p.type})`).join("\n"),
+  experience: experience.map((e) => `• ${e.company} — ${e.role}`).join("\n"),
   skills: "Languages: TypeScript, JavaScript, Python, C++, Java, SQL\nFrameworks: Next.js, React, Node.js, Flask, Tailwind CSS\nData/ML: PyTorch, OpenCV, Scikit-learn, PostgreSQL, MongoDB, Supabase",
-  contact: "Email: anaghb1010@gmail.com | Phone: +91-9821112573 | Location: Delhi, India",
+  contact: `Email: ${profile.email} | Phone: ${profile.phone} | Location: ${profile.location}`,
   resume: "Opening resume.pdf…",
-  whoami: "anagh (Software Engineer @ DTU)",
+  whoami: `${profile.firstName.toLowerCase()} (${profile.role} @ DTU)`,
   ls: "index.tsx  about.md  package.json  showcase.tsx  experience.log  run.sh  contact.ts  resume.pdf",
   clear: "",
 };

@@ -14,6 +14,7 @@
 - 2026-11-09 [CODE] D005 ACTIVE: Aligned dependency package names and versions to match code editor JSON standards with left-bound colons, right-aligned version strings, and gradient proficiency bars.
 - 2026-11-09 [CODE] D006 ACTIVE: Expanded release history date column width to `13.5rem` with right padding (`sm:pr-7`) and aligned vertical timeline track/dots so longer date ranges never touch or fall behind the timeline line.
 - 2026-11-09 [CODE] D007 ACTIVE: Upgraded to `react@19`, `react-dom@19`, and `framer-motion@11.18.2` matching Next.js 16 native runtime with zero deprecation warnings.
+- 2026-11-09 [CODE] D008 ACTIVE: Explicitly typed `ProjectItem` interface in `data/portfolio.ts` and dynamically bound terminal commands to `projects` array so any added project reflects in both the showcase UI and terminal shell.
 
 ## Done (recent)
 - 2026-11-09 [CODE] Inspected DOM, CSS, layout structure, and section mechanics of `anoopsonkriya.dev`.
