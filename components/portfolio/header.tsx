@@ -1,6 +1,7 @@
 "use client";
 
-import { Folder, Github, Menu, Search, X } from "lucide-react";
+import { Github, Menu, Search, X } from "lucide-react";
+import { FolderIcon } from "@/components/portfolio/file-icon";
 import { profile, type PortfolioTab } from "@/data/portfolio";
 
 interface HeaderProps {
@@ -35,7 +36,7 @@ export function Header({
 
       {/* Center: File path breadcrumb */}
       <div className="hidden items-center gap-2 font-mono text-xs text-zinc-500 md:flex">
-        <Folder className="h-3.5 w-3.5 text-zinc-400" />
+        <FolderIcon className="h-3.5 w-3.5 text-zinc-400" />
         <span>anagh-bajpai</span>
         <span className="text-zinc-700">/</span>
         <span className="text-zinc-300">src/{activeTab}</span>

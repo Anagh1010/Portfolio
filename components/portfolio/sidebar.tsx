@@ -1,12 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import {
-  ChevronDown,
-  ChevronRight,
   ExternalLink,
   Files,
-  Folder,
   GitBranch,
   Github,
   Linkedin,
@@ -14,7 +10,7 @@ import {
   Settings,
   Terminal,
 } from "lucide-react";
-import { PortfolioFileIcon, FileIcon } from "@/components/portfolio/file-icon";
+import { PortfolioFileIcon, FileIcon, FolderIcon } from "@/components/portfolio/file-icon";
 import { portfolioTabs, profile, type PortfolioTab } from "@/data/portfolio";
 
 interface SidebarProps {
@@ -32,8 +28,6 @@ export function Sidebar({
   isOpenMobile,
   onCloseMobile,
 }: SidebarProps) {
-  const [folderOpen, setFolderOpen] = useState(true);
-
   const handleTabClick = (tab: PortfolioTab) => {
     onSelectTab(tab);
     onCloseMobile();
@@ -54,7 +48,7 @@ export function Sidebar({
             aria-label="Explorer"
           >
             <span className="absolute left-0 top-1.5 bottom-1.5 w-[2px] rounded-r bg-emerald-400" />
-            <Files className="h-[18px] w-[18px] text-zinc-200" />
+            <FolderIcon className="h-[18px] w-[18px] text-zinc-200" />
           </button>
 
           <button
@@ -105,60 +99,52 @@ export function Sidebar({
             <span className="tracking-widest text-zinc-600">•••</span>
           </div>
 
-          {/* Root Project */}
-          <button
-            type="button"
-            onClick={() => setFolderOpen((prev) => !prev)}
-            className="flex w-full items-center gap-1.5 rounded px-2 py-1 text-left text-xs font-semibold text-zinc-300 hover:bg-white/[0.04]"
-          >
-            {folderOpen ? <ChevronDown className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
-            <Folder className="h-3.5 w-3.5 text-amber-300/80" />
+          {/* Root Project Folder (Static, not collapsible, with anoopsonkriya.dev folder icon) */}
+          <div className="flex h-7 items-center gap-1.5 px-2 text-xs font-semibold text-zinc-300">
+            <FolderIcon className="h-3.5 w-3.5 text-zinc-500" />
             <span>anagh-bajpai</span>
-          </button>
+          </div>
 
-          {/* Folder contents */}
-          {folderOpen && (
-            <div className="mt-1 space-y-0.5 pl-4 border-l border-white/[0.04] ml-3.5">
-              <div className="flex items-center gap-1.5 px-2 py-1 text-zinc-400">
-                <ChevronDown className="h-3 w-3 text-zinc-600" />
-                <Folder className="h-3.5 w-3.5 text-amber-200/70" />
-                <span>src</span>
-              </div>
-
-              <div className="space-y-0.5 pl-3">
-                {portfolioTabs.map((tab) => {
-                  const isSelected = activeTab === tab;
-                  return (
-                    <button
-                      key={tab}
-                      type="button"
-                      onClick={() => handleTabClick(tab)}
-                      className={`flex w-full items-center gap-2 rounded px-2 py-1 text-left transition-colors ${
-                        isSelected
-                          ? "bg-white/[0.08] text-white font-medium"
-                          : "text-zinc-400 hover:bg-white/[0.03] hover:text-zinc-200"
-                      }`}
-                    >
-                      <PortfolioFileIcon file={tab} />
-                      <span className="truncate">{tab}</span>
-                    </button>
-                  );
-                })}
-
-                {/* Direct resume link in explorer */}
-                <a
-                  href={profile.resume}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex w-full items-center gap-2 rounded px-2 py-1 text-zinc-400 hover:bg-white/[0.03] hover:text-zinc-200"
-                >
-                  <FileIcon file="resume.pdf" />
-                  <span>resume.pdf</span>
-                  <ExternalLink className="h-2.5 w-2.5 ml-auto text-zinc-600" />
-                </a>
-              </div>
+          {/* src folder and files (Static, not collapsible) */}
+          <div className="mt-0.5 space-y-0.5 pl-3 border-l border-white/[0.04] ml-3.5">
+            <div className="flex h-7 items-center gap-1.5 px-2 text-zinc-400 text-xs">
+              <FolderIcon className="h-3.5 w-3.5 text-zinc-500" />
+              <span>src</span>
             </div>
-          )}
+
+            <div className="space-y-0.5 pl-2.5">
+              {portfolioTabs.map((tab) => {
+                const isSelected = activeTab === tab;
+                return (
+                  <button
+                    key={tab}
+                    type="button"
+                    onClick={() => handleTabClick(tab)}
+                    className={`flex w-full items-center gap-2 rounded px-2 py-1 text-left transition-colors ${
+                      isSelected
+                        ? "bg-white/[0.08] text-white font-medium"
+                        : "text-zinc-400 hover:bg-white/[0.03] hover:text-zinc-200"
+                    }`}
+                  >
+                    <PortfolioFileIcon file={tab} />
+                    <span className="truncate">{tab}</span>
+                  </button>
+                );
+              })}
+
+              {/* Direct resume link in explorer */}
+              <a
+                href={profile.resume}
+                target="_blank"
+                rel="noreferrer"
+                className="flex w-full items-center gap-2 rounded px-2 py-1 text-zinc-400 hover:bg-white/[0.03] hover:text-zinc-200"
+              >
+                <FileIcon file="resume.pdf" />
+                <span>resume.pdf</span>
+                <ExternalLink className="h-2.5 w-2.5 ml-auto text-zinc-600" />
+              </a>
+            </div>
+          </div>
         </div>
 
         {/* 3. Profiles / Quick Links at bottom of explorer */}
