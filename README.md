@@ -148,9 +148,3 @@ Deploy directly to **Vercel** with zero extra configuration:
 1. Push your repository to GitHub.
 2. Import the project in the [Vercel Dashboard](https://vercel.com).
 3. Vercel will automatically detect Next.js and deploy the site.
-
----
-
-## 📄 License
-
-MIT © [Anagh Bajpai](https://github.com/Anagh1010). Created for personal and developer portfolio use.
