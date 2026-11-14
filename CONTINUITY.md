@@ -4,6 +4,7 @@
 - 2026-11-09 [USER] Goal: Match portfolio UI closely to `https://anoopsonkriya.dev/` with data sourced from `data/portfolio.ts`; music widget removed per user request.
 - 2026-11-09 [CODE] Invariant: No code file longer than 300 lines; modular architecture; all data sourced from `data/portfolio.ts`.
 - 2026-11-09 [TOOL] Build verified: `npm run build` exits 0 with zero warnings/errors on `next@16.4.5` and `react@19`; `npm audit` reports 0 vulnerabilities.
+- 2026-11-14 [CODE] D010 ACTIVE: Cleaned up favicon structure to adhere to Next.js App Router file-based metadata convention (`app/icon.svg` only, removed redundant `public/icon.svg`), verified static `/icon.svg` route generation in Turbopack.
 - 2026-11-09 [CODE] Rewrote `README.md` with complete architecture breakdown, feature guide, single-file editing manual, tech stack details, and deployment guide.
 
 ## Decisions
